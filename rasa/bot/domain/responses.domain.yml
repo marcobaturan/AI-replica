@@ -38,3 +38,6 @@ responses:
 
   utter_who_is:
   - text: "OK, I will tell you who {name} is."
+
+  utter_suggest_to_buy_apples:
+  - text: "Then go and buy apples! :)"

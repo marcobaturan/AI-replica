@@ -47,6 +47,11 @@ rules:
   - intent: who_is
   - action: action_who_is
 
+- rule: Suggest to go and buy apples
+  steps:
+  - intent: want_buy_apples
+  - action: utter_suggest_to_buy_apples
+
 # FALLBACK
 - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
   steps:

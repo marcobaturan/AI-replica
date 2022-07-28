@@ -48,12 +48,12 @@ Build web chat by running `python3 build_web_chat.py`. The web chat will be prep
 Then open your browser and navigate to the address and port server listens on (by default, the port is 8000).
 
 ### Rasa
-**IMPORTANT.** Install Python 3.8 first as Rasa does not support later versions yet (as of January 2022).
+**IMPORTANT.** Install Python 3.9 first as Rasa does not support later versions yet (as of July 2022).
 
 Go to "rasa" folder, create virtual environment and switch to the created virtual environment: 
 ```
 cd rasa
-python3.8 -m venv ./venv
+python3.9 -m venv ./venv
 source ./venv/bin/activate
 ```
 
