@@ -42,6 +42,11 @@ rules:
   - intent: tell_me_about
   - action: action_search_data
 
+- rule: Tell about a thing when user asks.
+  steps:
+  - intent: what_is
+  - action: action_what_is
+
 - rule: Tell about a person when user asks.
   steps:
   - intent: who_is

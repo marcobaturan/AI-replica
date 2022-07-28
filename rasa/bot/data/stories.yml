@@ -1,6 +1,6 @@
 # It looks like there is no need to use stories. At least for now.
 # In any case, need to find a way to not too use user stories to reduce complexity and simplify training data.
-# version: "3.0"
+# version: "3.1"
 
 # stories:
 

@@ -1,5 +1,3 @@
-version: "3.0"
-
 nlu:
 - intent: deny
   examples: |

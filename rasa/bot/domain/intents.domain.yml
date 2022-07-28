@@ -1,4 +1,4 @@
-version: "3.0"
+version: "3.1"
 
 intents:
   - affirm
@@ -12,4 +12,5 @@ intents:
   - mood_great
   - mood_unhappy
   - tell_me_about
+  - what_is
   - who_is

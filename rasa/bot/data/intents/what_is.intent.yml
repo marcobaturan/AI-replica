@@ -1,0 +1,5 @@
+nlu:
+- intent: what_is
+  examples: |
+    - What is [apple]{"entity": "name"}?
+    - What is [plane]{"entity": "name"}?
