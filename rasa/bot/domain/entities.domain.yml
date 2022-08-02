@@ -1,5 +1,4 @@
-version: "3.1"
-
 entities:
   - name
   - personal_question
+  - user_name # name of a user interactiong with the bot

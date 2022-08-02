@@ -1,4 +1,4 @@
-version: "3.0"
+version: "3.1"
 
 rules:
 
@@ -6,6 +6,11 @@ rules:
   steps:
   - intent: greet
   - action: utter_greet
+
+- rule: Say Hello and user name anytime the user says their name
+  steps:
+  - intent: user_name 
+  - action: utter_greet_with_name
 
 - rule: Say goodbye anytime the user says goodbye
   steps:

@@ -7,3 +7,10 @@ slots:
     - type: from_entity
       entity: name
       intent: who_is
+  user_name:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: user_name
+      intent: user_name
+      initial_value: "Dear user"
