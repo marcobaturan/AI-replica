@@ -27,7 +27,7 @@ def run_server(
     httpd.serve_forever()
 
 
-def stop_server(python_version):
+def stop_server(python_version=None):
     python_name = get_python_exec_name(python_version=python_version)
     ident = f"{python_name} server_bot.py"
     kill_processes(expected_command_line_part=ident, sleep_sec=10)

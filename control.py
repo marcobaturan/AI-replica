@@ -37,15 +37,15 @@ from rasa.utils import (
 from server_bot import stop_server as stop_basic_server
 
 
-required_python = config["system"]["preferred_python_version"]
+rasa_required_python = config["system"]["rasa_preferred_python_version"]
 expected_launch_duration_sec = config["rasa"]["expected_launch_duration_sec"]
 
 
 def print_notifications():
-    if "linux" in sys.platform and is_expected_python_version(required_python):
+    if "linux" in sys.platform and is_expected_python_version(rasa_required_python):
         print("Detected the right OS and python version, which is nice.")
     else:
-        print(f"Note: this script was tested in linux and Python {required_python}")
+        print(f"Note: this script was tested in linux and Python {rasa_required_python}")
         print("It might work incorrectly in other environments.")
 
     print("Note: if you close this terminal, the server stuff will continue to run")
@@ -75,13 +75,13 @@ def restart_servers(rasa_path, work_dir, launch_bools):
         start_rasa_actions_server(rasa_path, work_dir)
 
     if launch_bools["basic"]:
-        stop_basic_server(python_version=required_python)
+        stop_basic_server()
         build_web_chat()
-        python_name = get_python_exec_name(python_version=required_python)
+        python_name = get_python_exec_name()
         execute_command(python_name, "server_bot.py", run_in_another_terminal7=True)
 
 def build_web_chat():
-    python_name = get_python_exec_name(python_version=required_python)
+    python_name = get_python_exec_name()
     execute_command(python_name, "build_web_chat.py", run_in_another_terminal7=False)
 
 def parse_arguments():
@@ -125,15 +125,28 @@ if __name__ == "__main__":
     cmd_args = parse_arguments()
     print_notifications()
     rasa_paths = get_rasa_paths()
+    args = {
+        "main_rasa": False,
+        "actions_rasa": False,
+        "basic": False,
+    }
 
     match cmd_args.command:
         case "train":
             print("Training model...", rasa_paths)
             train_model(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"])
             print("Training model completed.")
-        case "start_rasa":
-            args = { "main_rasa": True }
+        case "start_rasa_server":
+            args["main_rasa"] = True
             restart_servers(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"], args)
+        case "start_rasa_actions":
+            args["actions_rasa"] = True
+            restart_servers(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"], args)
+        case "start_server":
+            args["basic"] = True
+            restart_servers(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"], args)
+        case "start_ui":
+            open_url_in_browser("http://localhost:8000/")
         case None:
             print("Default command: currently no default command defined.")
         case _:

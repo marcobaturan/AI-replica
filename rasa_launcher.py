@@ -32,7 +32,7 @@ from rasa.utils import (
 from server_bot import stop_server as stop_basic_server
 
 
-required_python = config["system"]["preferred_python_version"]
+required_python = config["system"]["rasa_preferred_python_version"]
 expected_launch_duration_sec = config["rasa"]["expected_launch_duration_sec"]
 
 

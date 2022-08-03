@@ -1,5 +1,6 @@
 system:
-  preferred_python_version: "3.8"  # Used to create virtual envs, install dependencies
+  # Used to create virtual envs, install dependencies for Rasa. Usually, Rasa does not support the latest Python version.
+  rasa_preferred_python_version: "3.9"
 
 bot_engine: "rasa"
 
