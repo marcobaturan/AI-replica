@@ -34,7 +34,13 @@ def get_paths():
 
 
 def install_rasa_dependencies(required_python):
-    main_dir, venv_dir, work_dir, requirements, rasa_exec, pip_exec = get_paths()
+    paths = get_paths()
+    main_dir = paths["main_dir_abs"]
+    venv_dir = paths["venv_path_abs"]
+    work_dir = paths["working_dir_abs"]
+    requirements = paths["requirements_path_abs"]
+    rasa_exec = paths["rasa_exec_path_abs"]
+    pip_exec = paths["pip_exec_path_abs"]
     install_dependencies(pip_exec, venv_dir, requirements, required_python, "rasa")
     return rasa_exec, work_dir
 

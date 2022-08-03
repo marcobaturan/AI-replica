@@ -94,27 +94,27 @@ def parse_arguments():
         nargs='?', 
         help='Command to execute'
     )
-    parser.add_argument(
-        "-b",
-        "--basic_restart",
-        dest="basic",
-        action="store_true",
-        help="Restarts the BASIC server. If not specified, every server will be restarted",
-    )
-    parser.add_argument(
-        "-a",
-        "--actions_restart",
-        dest="actions_rasa",
-        action="store_true",
-        help="Restarts the ACTIONS server of Rasa. If not specified, every server will be restarted",
-    )
-    parser.add_argument(
-        "-m",
-        "--main_restart",
-        dest="main_rasa",
-        action="store_true",
-        help="Restarts the MAIN server of Rasa. If not specified, every server will be restarted",
-    )
+    # parser.add_argument(
+    #     "-b",
+    #     "--basic_restart",
+    #     dest="basic",
+    #     action="store_true",
+    #     help="Restarts the BASIC server. If not specified, every server will be restarted",
+    # )
+    # parser.add_argument(
+    #     "-a",
+    #     "--actions_restart",
+    #     dest="actions_rasa",
+    #     action="store_true",
+    #     help="Restarts the ACTIONS server of Rasa. If not specified, every server will be restarted",
+    # )
+    # parser.add_argument(
+    #     "-m",
+    #     "--main_restart",
+    #     dest="main_rasa",
+    #     action="store_true",
+    #     help="Restarts the MAIN server of Rasa. If not specified, every server will be restarted",
+    # )
  
     args = parser.parse_args()
 
@@ -147,15 +147,14 @@ if __name__ == "__main__":
             restart_servers(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"], args)
         case "start_ui":
             open_url_in_browser("http://localhost:8000/")
+        case "rasa_launcher":
+            install_replica_dependencies(rasa_required_python)
+            exec_rasa, work_dir_rasa = install_rasa_dependencies(rasa_required_python)
+            restart_servers(exec_rasa, work_dir_rasa, args)
+
+            time.sleep(expected_launch_duration_sec)
+            open_url_in_browser("http://localhost:8000/")
         case None:
             print("Default command: currently no default command defined.")
         case _:
             print("Invalid command", cmd_args.command)            
-
-
-    # install_replica_dependencies(required_python)
-    # exec_rasa, work_dir_rasa = install_rasa_dependencies(required_python)
-    # restart_servers(exec_rasa, work_dir_rasa, cmd_args)
-
-    # time.sleep(expected_launch_duration_sec)
-    # open_url_in_browser("http://localhost:8000/")
