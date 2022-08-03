@@ -23,14 +23,14 @@ def get_paths():
     requirements_path_abs = rasa_dir_abs + "/requirements.txt"
     rasa_exec_path_abs = venv_path_abs + "/bin/rasa"
     pip_exec_path_abs = venv_path_abs + "/bin/pip3"
-    return (
-        main_dir_abs,
-        venv_path_abs,
-        working_dir_abs,
-        requirements_path_abs,
-        rasa_exec_path_abs,
-        pip_exec_path_abs,
-    )
+    return {
+        "main_dir_abs": main_dir_abs,
+        "venv_path_abs": venv_path_abs,
+        "working_dir_abs": working_dir_abs,
+        "requirements_path_abs": requirements_path_abs,
+        "rasa_exec_path_abs": rasa_exec_path_abs,
+        "pip_exec_path_abs": pip_exec_path_abs,
+    }
 
 
 def install_rasa_dependencies(required_python):

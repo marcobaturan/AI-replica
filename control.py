@@ -13,6 +13,7 @@ python3 rasa_launcher.py -h
 
 """
 
+import string
 import sys
 import time
 import argparse
@@ -28,7 +29,9 @@ from rasa.utils import (
     start_rasa_actions_server,
     start_rasa_main_server,
     train_model,
-    stop_a_rasa_server, install_rasa_dependencies,
+    stop_a_rasa_server, 
+    install_rasa_dependencies,
+    get_paths as get_rasa_paths
 )
 
 from server_bot import stop_server as stop_basic_server
@@ -48,12 +51,12 @@ def print_notifications():
     print("Note: if you close this terminal, the server stuff will continue to run")
 
 
-def restart_servers(rasa_path, work_dir, args):
-    launch_bools = {
-        "basic": args.basic,
-        "main_rasa": args.main_rasa,
-        "actions_rasa": args.actions_rasa,
-    }
+def restart_servers(rasa_path, work_dir, launch_bools):
+    # launch_bools = {
+    #     "basic": args["basic"],
+    #     "main_rasa": args["main_rasa"],
+    #     "actions_rasa": args["actions_rasa"],
+    # }
 
     if any(launch_bools.values()):
         print(f"Restarting only the specified servers: {launch_bools}")
@@ -87,6 +90,11 @@ def parse_arguments():
     description = "Makes all the necessary preparations to launch Rasa, and launches it"
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
+        'command', 
+        nargs='?', 
+        help='Command to execute'
+    )
+    parser.add_argument(
         "-b",
         "--basic_restart",
         dest="basic",
@@ -107,7 +115,7 @@ def parse_arguments():
         action="store_true",
         help="Restarts the MAIN server of Rasa. If not specified, every server will be restarted",
     )
-
+ 
     args = parser.parse_args()
 
     return args
@@ -116,10 +124,25 @@ def parse_arguments():
 if __name__ == "__main__":
     cmd_args = parse_arguments()
     print_notifications()
+    rasa_paths = get_rasa_paths()
 
-    install_replica_dependencies(required_python)
-    exec_rasa, work_dir_rasa = install_rasa_dependencies(required_python)
-    restart_servers(exec_rasa, work_dir_rasa, cmd_args)
+    match cmd_args.command:
+        case "train":
+            print("Training model...", rasa_paths)
+            train_model(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"])
+            print("Training model completed.")
+        case "start_rasa":
+            args = { "main_rasa": True }
+            restart_servers(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"], args)
+        case None:
+            print("Default command: currently no default command defined.")
+        case _:
+            print("Invalid command", cmd_args.command)            
 
-    time.sleep(expected_launch_duration_sec)
-    open_url_in_browser("http://localhost:8000/")
+
+    # install_replica_dependencies(required_python)
+    # exec_rasa, work_dir_rasa = install_rasa_dependencies(required_python)
+    # restart_servers(exec_rasa, work_dir_rasa, cmd_args)
+
+    # time.sleep(expected_launch_duration_sec)
+    # open_url_in_browser("http://localhost:8000/")
