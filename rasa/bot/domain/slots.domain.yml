@@ -11,6 +11,6 @@ slots:
     type: text
     mappings:
     - type: from_entity
-      entity: user_name
+      entity: name
       intent: user_name
       initial_value: "Dear user"

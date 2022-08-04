@@ -44,3 +44,7 @@ Potentially, it is even more convenient to install Rasa X for the purpose of deb
 ## Notes
 1. Command line interface: https://rasa.com/docs/rasa/command-line-interface
 2. Installation: https://rasa.com/docs/rasa/installation/. Install Python 3.8 first as Rasa does not support later versions yet (as of January 2022). In the `pip3 install -U --user pip && pip3 install rasa` command remove `--user` flag, otherwise you can experience an error saying that execution is not possible ("Can not perform a '--user' install. User site-packages are not visible in this virtualenv."). There is no sense to install packages to user folder (--user) when you are in a virtual environment.
+
+# Useful stuff
+`rasa shell` command starts bot in a terminal.
+`--debug` flag passed to a rasa command allows seeing some debug information.
