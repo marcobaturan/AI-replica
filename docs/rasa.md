@@ -48,3 +48,28 @@ Potentially, it is even more convenient to install Rasa X for the purpose of deb
 # Useful stuff
 `rasa shell` command starts bot in a terminal.
 `--debug` flag passed to a rasa command allows seeing some debug information.
+
+# Conversation stores
+## Sqlite
+Install (on Ubuntu): `sudo apt install sqlite3`
+Create a folder where you db will be stored. sqlite does not create folder and throws an error if the folder does not exist. The db file is created by sqlite itself.
+Configure: [Tracker Stores](https://rasa.com/docs/rasa/tracker-stores/#sqltrackerstore)
+```yaml
+tracker_store:
+   type: SQL
+   dialect: sqlite
+   url: sqlite:///../../../db/replica.db # specify path to a db file after sqlite:///
+   db: replica.db
+   username: 
+   password: 
+```
+
+# API
+## webhook
+By default, Rasa server provides webhook api: [see](https://rasa.com/docs/rasa/http-api/), [see](https://rasa.com/docs/rasa/connectors/your-own-website#restinput). It looks like webhook is a conversation channel, i.e. it allows to send input messages from user and receive replies from the bot but does not provide access to anything else. E.g. you can have the following webhooks (channels): rest, socket.io, slack, etc.
+
+## http api
+To have access to additional functionality of a Rasa server, you can start server with exposed api: [Http API](https://rasa.com/docs/rasa/http-api/), 
+**Note** Make sure that the api endoints are protecte either with authorization or hidden behind a proxy server/app router, so that they are not exposed to the Internet.
+
+

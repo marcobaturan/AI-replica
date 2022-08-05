@@ -32,6 +32,14 @@ action_endpoint:
 #    username: <username used for authentication>
 #    password: <password used for authentication>
 
+tracker_store:
+   type: SQL
+   dialect: sqlite
+   url: sqlite:///../../../db/replica.db # specify path to a db file after sqlite:///
+   db: replica.db
+   username: 
+   password: 
+
 # Event broker which all conversation events should be streamed to.
 # https://rasa.com/docs/rasa/event-brokers
 
