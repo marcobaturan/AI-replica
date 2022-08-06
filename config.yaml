@@ -13,4 +13,4 @@ server:
   address: "localhost"
   static_files_dir: "./dist"
   db_path: "../db/replica.db"
-
+  anonymous_user_id: "anonymous"
