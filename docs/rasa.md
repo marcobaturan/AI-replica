@@ -58,8 +58,8 @@ Configure: [Tracker Stores](https://rasa.com/docs/rasa/tracker-stores/#sqltracke
 tracker_store:
    type: SQL
    dialect: sqlite
-   url: sqlite:///../../../db/replica.db # specify path to a db file after sqlite:///
-   db: replica.db
+   url: sqlite:///../../../db/rasa.db # specify path to a db file after sqlite:///
+   db: rasa.db
    username: 
    password: 
 ```

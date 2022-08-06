@@ -3,9 +3,9 @@ import json
 import mimetypes
 import os.path
 import requests
-
 from ai_replica.common import get_answer
 from server.read_config import config
+import server.data_access as data_access
 
 STATIC_FILES_DIR = config['server']['static_files_dir']
 BOT_ENGINE = config['bot_engine']

@@ -1,4 +1,4 @@
-""" A basic http server. """
+""" A basic http server. Processes requests from UI chat. """
 
 import argparse
 from http.server import HTTPServer
@@ -8,17 +8,18 @@ from server.request_handler import RequestHandler
 
 from ai_replica.engine.reconstruct_mind import reconstruct
 from server.read_config import config
+import server.data_access as data_access
 
 
-DEFAULT_ADDRESS = "localhost"
-DEFAULT_PORT = 8000
+# DEFAULT_ADDRESS = "localhost"
+# DEFAULT_PORT = 8000
 
 
 def run_server(
     server_class=HTTPServer,
     handler_class=RequestHandler,
-    addr=DEFAULT_ADDRESS,
-    port=DEFAULT_PORT,
+    addr=None,
+    port=None
 ):
     server_address = (addr, port)
     httpd = server_class(server_address, handler_class)
@@ -61,6 +62,9 @@ def run():
     print("Reconstruction started.")
     reconstruct()
     print("Reconstruction completed.")
+
+    data_access.ensure_tables_exist()
+    data_access.get_users()
 
     args = parse_arguments()
     address = args.address if args.address != None else config["server"]["address"]

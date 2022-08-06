@@ -12,3 +12,5 @@ server:
   port: 8000
   address: "localhost"
   static_files_dir: "./dist"
+  db_path: "../db/replica.db"
+
