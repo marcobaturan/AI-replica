@@ -18,12 +18,14 @@ def create_messages_table():
   db = db_connection.cursor()
   result = db.execute('''CREATE TABLE Messages
     (id text, text text, date integer, user_id text)''')
+  db_connection.commit()
   db.close()
 
 def create_users_table():
   db = db_connection.cursor()
   result = db.execute('''CREATE TABLE Users
     (id text, name text)''')
+  db_connection.commit()
   db.close()
 
 def ensure_tables_exist():
@@ -56,4 +58,5 @@ def add_message(text, user_id):
   escaped_text = text.replace('"', '\\"')
   print(f"INSERT INTO Messages VALUES ('{id}','{escaped_text}',{current_time_ms},'{user_id}')")
   db.execute(f"INSERT INTO Messages VALUES ('{id}','{escaped_text}',{current_time_ms},'{user_id}')")
+  db_connection.commit()
   db.close()
