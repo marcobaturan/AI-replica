@@ -1,6 +1,7 @@
 ''' RequestHandlers should direct incoming requests to appropriate handlers. It is an orhecstrator/controller. '''
 
 from http.server import BaseHTTPRequestHandler
+from logging import handlers
 import mimetypes
 import os.path
 import urllib.parse as url_parse
@@ -20,6 +21,13 @@ class RequestHandler(BaseHTTPRequestHandler):
     "bot_name": "Ben",
     "user_id": user_id,
     "conversation_id": f"{bot_id}_{user_id}"
+  }
+  handlers_get = {
+    "/getConversationHistory": getConversationHistory,
+    "/getUserAndBotInfo": getUserAndBotInfo
+  }
+  handlers_post = {
+    "/getResponse": getResponse
   }
 
   def do_GET(self):
@@ -66,14 +74,22 @@ class RequestHandler(BaseHTTPRequestHandler):
     if content:
       self.wfile.write(content)
 
+  # TODO: A simple router should be implemented to select actions based on request path.
   def do_POST(self):
     print(f"POST method is called: {self.path}")
-    result = self.__get_api_post_response()
+    parsed_path = url_parse.urlparse(self.path)
+    query = url_parse.parse_qs(parsed_path.query)
+    path = parsed_path.path
+    handler = self.handlers_post.get(path)
+    if handler == None:
+      self.send_response(404)
+      self.end_headers()
+      return
     
+    result = handler(self, self.context)
     self.send_response(200)
     self.send_header("Content-type", result["content_type"])
     self.end_headers()
-
     self.wfile.write(result["content"].encode("utf8"))
 
   def __get_api_get_response(self):
@@ -93,12 +109,4 @@ class RequestHandler(BaseHTTPRequestHandler):
     if (os.path.exists(file_path)):
       with open(file_path, "rb") as f:
         content = f.read()
-    return content   
-
-  # TODO: A simple router should be implemented to select actions based on request path.
-  def __get_api_post_response(self):
-    parsed_path = url_parse.urlparse(self.path)
-    query = url_parse.parse_qs(parsed_path.query)
-    path = parsed_path.path
-    if path == "/getResponse":
-      return getResponse(self, self.context)
+    return content
