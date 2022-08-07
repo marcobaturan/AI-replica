@@ -1,3 +1,5 @@
+''' RequestHandlers should direct incoming requests to appropriate handlers. It is an orhecstrator/controller. '''
+
 from http.server import BaseHTTPRequestHandler
 import json
 import mimetypes
@@ -5,6 +7,8 @@ import os.path
 import requests
 import urllib.parse as url_parse
 from ai_replica.common import get_answer
+from server.constants import CONTENT_TYPES
+from server.handlers.getUserAndBotInfo import getUserAndBotInfo
 from server.read_config import config
 import server.data_access as data_access
 
@@ -16,7 +20,12 @@ ANONYMOUS_USER_ID = config['server']['anonymous_user_id']
 class RequestHandler(BaseHTTPRequestHandler):
   bot_id = "bot"
   user_id = ANONYMOUS_USER_ID
-  conversation_id = f"{bot_id}_{user_id}"
+  context = {
+    "bot_id": bot_id,
+    "bot_name": "Ben",
+    "user_id": user_id,
+    "conversation_id": f"{bot_id}_{user_id}"
+  }
 
   def do_GET(self):
     print(f"GET method is called: {self.path}")
@@ -47,10 +56,11 @@ class RequestHandler(BaseHTTPRequestHandler):
         content_type = mimetypes.guess_type(path)[0]
     # if there is no extension, treat request as api request
     else:
-      api_resp_str = self.__get_api_get_response()
-      content = (api_resp_str or "").encode("utf8")
-      content_type = "application/json"
-
+      api_resp = self.__get_api_get_response()
+      if api_resp != None:
+        content = (api_resp["content"] or "").encode("utf8")
+        content_type = api_resp["content_type"]
+      
     if (content_type != ""):
       self.send_response(200)
     else:
@@ -65,7 +75,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     print(f"POST method is called: {self.path}")
     content_type = "application/json"
     content = self.__get_api_post_response()
-    data_access.add_message(content, self.bot_id, self.conversation_id)
+    data_access.add_message(content, self.bot_id, self.context["conversation_id"])
 
     self.send_response(200)
     self.send_header("Content-type", content_type)
@@ -78,13 +88,14 @@ class RequestHandler(BaseHTTPRequestHandler):
     query = url_parse.parse_qs(parsed_path.query)
     path = parsed_path.path
     if path == "/getConversationHistory":
-      messages = data_access.get_conversation_messages(self.conversation_id)
-      return json.dumps(messages)
-    if path == "/getUserAndBotIds":
-      dict = {}
-      dict["user_id"] = self.user_id
-      dict["bot_id"] = self.bot_id
-      return json.dumps(dict)
+      messages = data_access.get_conversation_messages(self.context["conversation_id"])
+      return {
+        "content": json.dumps(messages),
+        "content_type": CONTENT_TYPES.APPLICATION_JSON
+      }
+    if path == "/getUserAndBotInfo":
+      # TODO: path some general info to the handler, i.e. the context info: local plus request context
+      return getUserAndBotInfo(self, self.context)
     return None
 
   def __get_static_file_content(self, path):
@@ -102,7 +113,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     data = self.rfile.read(length)
     obj = json.loads(data)
     user_message = obj["message"]
-    data_access.add_message(user_message, self.user_id, self.conversation_id)
+    data_access.add_message(user_message, self.user_id, self.context["conversation_id"])
 
     # TODO: provide engine logic via a strategy, e.g. implement a separate class/function to process Rasa requests
     if (BOT_ENGINE == "rasa"):

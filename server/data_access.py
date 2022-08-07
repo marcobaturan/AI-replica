@@ -64,7 +64,7 @@ def add_message(text, user_id, conversation_id):
   
   current_time_ms = int(time.time_ns()/1000)
   id = str(uuid.uuid4())
-  escaped_text = text.replace('"', '\\"').replace("'", "''")
+  escaped_text = text.replace("'", "''")
   print("escaped_text", escaped_text)
   db.execute(f"INSERT INTO Messages VALUES ('{id}','{escaped_text}',{current_time_ms},'{user_id}','{conversation_id}')")
   db_connection.commit()
