@@ -64,7 +64,7 @@ def run():
     print("Reconstruction completed.")
 
     data_access.ensure_tables_exist()
-    data_access.get_messages()
+    data_access.get_conversation_messages("bot_anonymous")
 
     args = parse_arguments()
     address = args.address if args.address != None else config["server"]["address"]

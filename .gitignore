@@ -1,6 +1,7 @@
 .coverage
 .idea
 .rasa
+.vscode
 __pycache__
 dist
 rasa/bot/models

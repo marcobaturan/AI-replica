@@ -14,19 +14,21 @@ RASA_REST_WEBHOOK = config['rasa']['rest_webhook']
 ANONYMOUS_USER_ID = config['server']['anonymous_user_id']
 
 class RequestHandler(BaseHTTPRequestHandler):
+  bot_id = "bot"
   user_id = ANONYMOUS_USER_ID
+  conversation_id = f"{bot_id}_{user_id}"
 
   def do_GET(self):
     print(f"GET method is called: {self.path}")
 
     parsed_path = url_parse.urlparse(self.path)
-    path = parsed_path.path
     query = url_parse.parse_qs(parsed_path.query)
-    if query.get("user"):
-      self.user_id = query.get("user")
-      
+    path = parsed_path.path
+          
     if (path == "/"):
-      path = "/index.html"
+      path = "/index.html"      
+      if query.get("user"):
+        self.user_id = query.get("user")
 
     last_slash_index = path.rfind("/")
     resource_name = path if last_slash_index == -1 else path[(last_slash_index + 1):]
@@ -38,14 +40,15 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     content = None
     content_type = ""
+    # if extension is present, serve static files
     if (resource_extension != ""):
-      file_path = f"{STATIC_FILES_DIR}{path}"
-      if (os.path.exists(file_path)):
-        with open(file_path, "rb") as f:
-          content = f.read()
-          content_type = mimetypes.guess_type(path)[0]
+      content = self.__get_static_file_content(path)
+      if content != None:          
+        content_type = mimetypes.guess_type(path)[0]
+    # if there is no extension, treat request as api request
     else:
-      content = self.__get_api_get_response()
+      api_resp_str = self.__get_api_get_response()
+      content = (api_resp_str or "").encode("utf8")
       content_type = "application/json"
 
     if (content_type != ""):
@@ -62,7 +65,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     print(f"POST method is called: {self.path}")
     content_type = "application/json"
     content = self.__get_api_post_response()
-    data_access.add_message(content, self.user_id)
+    data_access.add_message(content, self.bot_id, self.conversation_id)
 
     self.send_response(200)
     self.send_header("Content-type", content_type)
@@ -71,7 +74,25 @@ class RequestHandler(BaseHTTPRequestHandler):
     self.wfile.write(content.encode("utf8"))
 
   def __get_api_get_response(self):
-    return json.dumps({"message": "Hello, World! I am Bot!"})
+    parsed_path = url_parse.urlparse(self.path)
+    query = url_parse.parse_qs(parsed_path.query)
+    path = parsed_path.path
+    if path == "/getConversationHistory":
+      messages = data_access.get_conversation_messages(self.conversation_id)
+      return json.dumps(messages)
+    if path == "/getUserAndBotIds":
+      dict = {}
+      dict["user_id"] = self.user_id
+      dict["bot_id"] = self.bot_id
+      return json.dumps(dict)
+    return None
+
+  def __get_static_file_content(self, path):
+    file_path = f"{STATIC_FILES_DIR}{path}"
+    if (os.path.exists(file_path)):
+      with open(file_path, "rb") as f:
+        content = f.read()
+    return content   
 
   # Currently, get_answer is the default processed action.
   # Other actions can be added later.
@@ -81,6 +102,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     data = self.rfile.read(length)
     obj = json.loads(data)
     user_message = obj["message"]
+    data_access.add_message(user_message, self.user_id, self.conversation_id)
 
     # TODO: provide engine logic via a strategy, e.g. implement a separate class/function to process Rasa requests
     if (BOT_ENGINE == "rasa"):

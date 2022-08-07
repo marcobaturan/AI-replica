@@ -1,3 +1,4 @@
+import re
 import sqlite3
 import time
 import uuid
@@ -17,7 +18,7 @@ def does_table_exist(table_name):
 def create_messages_table():
   db = db_connection.cursor()
   result = db.execute('''CREATE TABLE Messages
-    (id text, text text, date integer, user_id text)''')
+    (id text, text text, date integer, user_id text, conversation_id text)''')
   db_connection.commit()
   db.close()
 
@@ -43,20 +44,28 @@ def get_messages():
     print(row)
   db.close()
 
-def get_user_messages(user_id):
+def get_conversation_messages(conversation_id):
   db = db_connection.cursor()
-  result = db.execute(f'SELECT * FROM Messages WHERE user_id="{user_id}"')
+  result = db.execute(f'SELECT * FROM Messages WHERE conversation_id="{conversation_id}" ORDER BY date ASC')
+  list = []
   for row in result:
-    print(row)
+    dict = {}
+    dict["id"] = row[0]
+    dict["text"] = row[1]
+    dict["date"] = row[2]
+    dict["user_id"] = row[3]
+    dict["conversation_id"] = row[4]
+    list.append(dict)
   db.close()
+  return list
 
-def add_message(text, user_id):
+def add_message(text, user_id, conversation_id):
   db = db_connection.cursor()
   
   current_time_ms = int(time.time_ns()/1000)
   id = str(uuid.uuid4())
-  escaped_text = text.replace('"', '\\"')
-  print(f"INSERT INTO Messages VALUES ('{id}','{escaped_text}',{current_time_ms},'{user_id}')")
-  db.execute(f"INSERT INTO Messages VALUES ('{id}','{escaped_text}',{current_time_ms},'{user_id}')")
+  escaped_text = text.replace('"', '\\"').replace("'", "''")
+  print("escaped_text", escaped_text)
+  db.execute(f"INSERT INTO Messages VALUES ('{id}','{escaped_text}',{current_time_ms},'{user_id}','{conversation_id}')")
   db_connection.commit()
   db.close()

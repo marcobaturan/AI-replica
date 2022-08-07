@@ -1,3 +1,30 @@
+const onWindowLoad =  async (event) => {
+  console.log('onWindowLoad')
+  const userAndBotIdsResponse = await fetch("/getUserAndBotIds", {method: "GET"})
+    .then((resp) => resp.json());
+  const userId = userAndBotIdsResponse.user_id;
+  const botId = userAndBotIdsResponse.bot_id;
+  const response = await fetch("/getConversationHistory", {
+    method: 'GET', 
+  })
+    .then((resp) => resp.json());
+  console.log("conversation history", userAndBotIdsResponse, response)
+  response.forEach((utterance) => {
+    if (utterance.user_id === userId) {
+      const userMessage = [{"type": "text", "content": utterance.text}];
+          
+      addMessage(messages, userMessage, "You", "user-message");
+    } else if (utterance.user_id === botId) {
+      const botResponse = JSON.parse(utterance.text);
+      const botMessages = botResponse.messages || [];
+      botMessages.forEach((message) => {
+        addMessage(messages, message, currentBot.name, "bot-message");
+      });
+    }
+  })
+};
+window.addEventListener('load', onWindowLoad);
+
 const sendMessageButton = document.getElementById("sendMessageButton");
 sendMessageButton.addEventListener("click", onSendMessageButtonClicked);
 
