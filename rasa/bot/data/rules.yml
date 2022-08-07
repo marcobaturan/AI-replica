@@ -27,6 +27,11 @@ rules:
   - intent: bot_name
   - action: utter_name
 
+- rule: Say user name when user asks to say their name.
+  steps:
+  - intent: user_asks_their_name
+  - action: utter_user_name
+
 - rule: Say birth date when user asks for birth date
   steps:
   - intent: bot_birth_date

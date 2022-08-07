@@ -132,7 +132,7 @@ if __name__ == "__main__":
     }
 
     match cmd_args.command:
-        case "train":
+        case "train_rasa":
             print("Training model...", rasa_paths)
             train_model(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"])
             print("Training model completed.")

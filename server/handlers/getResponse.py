@@ -9,27 +9,6 @@ from server.read_config import config
 BOT_ENGINE = config['bot_engine']
 RASA_REST_WEBHOOK = config['rasa']['rest_webhook']
 
-# TODO: messages sent to client should have a richer format, i.e. not only text should be accepted
-# Images, links, videos, text formatting, etc.
-# Take into account different possible channels: custom web-chat, WhatsApp, Messenger, Telegram, custom Android chat, etc...
-# Different message formatters should be used depending on the channel
-# TODO: move message processing logic out of the web server - to the bot engine
-def __get_bot_answers_from_rasa_bot_answers(response_text):
-  rasa_bot_answers = json.loads(response_text)
-  if (len(rasa_bot_answers) == 0):
-    return [[{"type": "text", "content" : "Sorry, I have no answer :("}]]
-
-  bot_answers = []    
-  for rasa_bot_answer in rasa_bot_answers:
-    if (rasa_bot_answer.get("text") != None):
-      bot_answers.append([{"type": "text", "content":rasa_bot_answer["text"]}])
-    elif (rasa_bot_answer.get("image") != None):
-      bot_answers.append([{"type": "image", "content": rasa_bot_answer["image"]}])
-    elif (rasa_bot_answer.get("custom") != None):
-      bot_answers.append(rasa_bot_answer["custom"])
-
-  return bot_answers
-
 def getResponse(request_handler: BaseHTTPRequestHandler, context):
   length = int(request_handler.headers.get('content-length'))
   data = request_handler.rfile.read(length)
@@ -58,3 +37,24 @@ def getResponse(request_handler: BaseHTTPRequestHandler, context):
     "content": content,
     "content_type": CONTENT_TYPES.APPLICATION_JSON
   }
+
+  # TODO: messages sent to client should have a richer format, i.e. not only text should be accepted
+# Images, links, videos, text formatting, etc.
+# Take into account different possible channels: custom web-chat, WhatsApp, Messenger, Telegram, custom Android chat, etc...
+# Different message formatters should be used depending on the channel
+# TODO: move message processing logic out of the web server - to the bot engine
+def __get_bot_answers_from_rasa_bot_answers(response_text):
+  rasa_bot_answers = json.loads(response_text)
+  if (len(rasa_bot_answers) == 0):
+    return [[{"type": "text", "content" : "Sorry, I have no answer :("}]]
+
+  bot_answers = []    
+  for rasa_bot_answer in rasa_bot_answers:
+    if (rasa_bot_answer.get("text") != None):
+      bot_answers.append([{"type": "text", "content":rasa_bot_answer["text"]}])
+    elif (rasa_bot_answer.get("image") != None):
+      bot_answers.append([{"type": "image", "content": rasa_bot_answer["image"]}])
+    elif (rasa_bot_answer.get("custom") != None):
+      bot_answers.append(rasa_bot_answer["custom"])
+
+  return bot_answers

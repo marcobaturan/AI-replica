@@ -44,3 +44,8 @@ responses:
 
   utter_suggest_to_buy_apples:
   - text: "Then go and buy apples! :)"
+
+  utter_user_name:
+  - text: "Your name is {user_name}. :)"
+  - text: "To the best of my knowledge, your name is {user_name}. :)"
+  - text: "{user_name}"
