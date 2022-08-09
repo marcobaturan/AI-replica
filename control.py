@@ -132,10 +132,10 @@ if __name__ == "__main__":
     }
 
     match cmd_args.command:
-        case "train_rasa":
-            print("Training model...", rasa_paths)
+        case "train_rasa_model":
+            print("Training Rasa model...", rasa_paths)
             train_model(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"])
-            print("Training model completed.")
+            print("Training Rasa model completed.")
         case "start_rasa_server":
             args["main_rasa"] = True
             restart_servers(rasa_paths["rasa_exec_path_abs"], rasa_paths["working_dir_abs"], args)

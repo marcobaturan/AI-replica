@@ -36,11 +36,11 @@ responses:
   utter_birth_place:
   - text: I was born in Boston, Massachusetts, United States of America
 
+  utter_i_will_remember_it:
+  - text: "OK, I will remember it! :)"
+
   utter_tell_me_about:
   - text: "OK, I will tell you about it..."
-
-  utter_who_is:
-  - text: "OK, I will tell you who {name} is."
 
   utter_suggest_to_buy_apples:
   - text: "Then go and buy apples! :)"
@@ -49,3 +49,11 @@ responses:
   - text: "Your name is {user_name}. :)"
   - text: "To the best of my knowledge, your name is {user_name}. :)"
   - text: "{user_name}"
+
+  utter_user_favorite_color:
+  - text: "Your favorite color is {user_favorite_color}!"
+  - text: "To the best of my knowledge, your favorite color is {user_favorite_color}. :)"
+  - text: "{user_favorite_color} :)"
+
+#  utter_who_is:
+#   - text: "OK, I will tell you who {name} is."

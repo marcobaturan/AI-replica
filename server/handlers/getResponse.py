@@ -5,9 +5,11 @@ from ai_replica.common import get_answer
 from server.constants import CONTENT_TYPES
 import server.data_access as data_access
 from server.read_config import config
+from server.text_to_speech import text_to_speech
 
 BOT_ENGINE = config['bot_engine']
 RASA_REST_WEBHOOK = config['rasa']['rest_webhook']
+TEXT_TO_SPEECH_ACTIVATED = config['server']['text_to_speech_activated']
 
 def getResponse(request_handler: BaseHTTPRequestHandler, context):
   length = int(request_handler.headers.get('content-length'))
@@ -32,6 +34,10 @@ def getResponse(request_handler: BaseHTTPRequestHandler, context):
 
   content = json.dumps({"messages": bot_answers})
   data_access.add_message(content, context["bot_id"], context["conversation_id"])
+
+  # TODO: provide text from bit answers. Currenlty bot answers are tree o fcontent: text, images, ect. Need to extract only tetx xontent out of there.
+  if TEXT_TO_SPEECH_ACTIVATED == True:
+    text_to_speech("Check my answer!")
 
   return {
     "content": content,

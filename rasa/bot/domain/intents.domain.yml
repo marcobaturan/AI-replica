@@ -12,7 +12,9 @@ intents:
   - mood_great
   - mood_unhappy
   - tell_me_about
+  - user_asks_their_favorite_color
   - user_asks_their_name
+  - user_provides_their_favorite_color
   - user_name
   - what_is
   - who_is

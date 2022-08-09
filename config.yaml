@@ -14,3 +14,4 @@ server:
   static_files_dir: "./dist"
   db_path: "../db/replica.db" # sqlite db path. use `file::memory:?cache=shared"` for in-memory db
   anonymous_user_id: "anonymous"
+  text_to_speech_activated: true

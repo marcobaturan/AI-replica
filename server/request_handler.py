@@ -105,6 +105,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     return None
 
   def __get_static_file_content(self, path):
+    content = None
     file_path = f"{STATIC_FILES_DIR}{path}"
     if (os.path.exists(file_path)):
       with open(file_path, "rb") as f:

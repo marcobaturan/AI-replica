@@ -26,6 +26,8 @@ Clone this repo.
 
 Navigate to the AI-replica dir.
 
+Install `make` tool, so that you can execute useful commands from project's `makefile`.
+
 ### Console bot
 
 Run the console bot:
