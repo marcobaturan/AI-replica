@@ -3,6 +3,8 @@ version: "3.1"
 responses:
   utter_greet:
   - text: "Hey! How are you?"
+  - text: "Hey!"
+  - text: "Hello! :)"
 
   utter_greet_with_name:
   - text: "Hey, {user_name}. How are you?"

@@ -2,10 +2,10 @@ version: "3.1"
 
 rules:
 
-- rule: Say Hello anytime the user says Hello
-  steps:
-  - intent: greet
-  - action: utter_greet
+# - rule: Say Hello anytime the user says Hello
+#   steps:
+#   - intent: greet
+#   - action: utter_greet
 
 - rule: Say Hello and user name anytime the user says their name
   steps:
@@ -17,10 +17,10 @@ rules:
   - intent: user_provides_their_favorite_color
   - action: utter_i_will_remember_it
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+# - rule: Say goodbye anytime the user says goodbye
+#   steps:
+#   - intent: goodbye
+#   - action: utter_goodbye
 
 - rule: Say 'I am a bot' anytime the user challenges
   steps:
