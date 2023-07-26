@@ -1,9 +1,10 @@
-version: "3.0"
+version: "3.1"
 
 nlu:
 - intent: bot_name
   examples: |
     - What is your name?
+    - What is you name? 
     - Tell me your name.
     - How can I call you?
     - Who are you?

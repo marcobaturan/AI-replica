@@ -15,7 +15,7 @@ def load_model(load_path):
     """
     loaded_model = read_json(load_path)
     return loaded_model
-    
+
 
 global_model = load_model(f"{PERSONAL_DATA_DIR}/reconstructed_mind_models/model.txt")
 
@@ -45,5 +45,9 @@ def get_model_answer(user_input, seed=None, custom_model=None):
             if random.random() > 0.5:
                 highest_score = score
                 closest_thought = thought
+
+    # no answer found among the thoughts
+    if highest_score == 0:
+        return "I have nothing to say. Probably, it makes sense to google."
 
     return closest_thought["answer"].strip()
