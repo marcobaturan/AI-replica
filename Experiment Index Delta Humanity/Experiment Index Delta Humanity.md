@@ -16,13 +16,13 @@
     According to Sitelew and Turchin (2025), existential risk analysis requires a multidisciplinary approach...
     
     In bibliography:
-    Sitelew, R., & Turchin, A. (2025). *Replica-AI*. Publication name, volume(issue), pages. DOI or URL.
+    Sitelew, R., & Turchin, A. & Baturan, M. (2025). *Replica-AI*. Publication name, volume(issue), pages. DOI or URL.
     
     ## How to cite us
     
     To cite this work, please use the following format:
     
-    Sitelew, R., & Turchin, A. (2025). *Replica-AI*. Publication name, volume(issue), pages. DOI or URL.
+    Sitelew, R., & Turchin, A. & Baturan, M. (2025). *Replica-AI*. Publication name, volume(issue), pages. DOI or URL.
     
     Publication date: March 21, 2025
 
