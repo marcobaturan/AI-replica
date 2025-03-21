@@ -5,6 +5,7 @@ import platform
 import subprocess
 import time
 import webbrowser
+from colorama import Fore
 
 from ai_replica.utils.files import is_file, get_main_dir_path
 
@@ -24,8 +25,10 @@ def is_expected_python_version(expected_version):
     return actual_version.startswith(expected_version)
 
 
-def get_python_exec_name(python_version):
+def get_python_exec_name(python_version=None):
     """Returns a string like 'python3.8', given the python version (e.g. '3.8')"""
+    if python_version == None:
+        return "python3"
     return "python" + python_version
 
 
@@ -34,7 +37,7 @@ def create_env_if_not_exist(env_path, python_version):
     if not os.path.exists(env_path):
         python_exec_name = get_python_exec_name(python_version)
         subprocess.call([python_exec_name, "-m", "venv", env_path])
-        print("created" + str(env_path))
+        print("created venv: " + str(env_path))
         existed7 = False
     else:
         print(str(env_path) + " already exist")
@@ -44,19 +47,38 @@ def create_env_if_not_exist(env_path, python_version):
 
 def install_requirements_with_pip(pip_path, requirements_path):
     """Uses pip to install the requirements defined in the file located at requirements_path. Also updates pip"""
-    subprocess.call([pip_path, "install", "-U", "pip"])  # updating pip
-    subprocess.call([pip_path, "install", "-r", requirements_path])
-    print(f"Installed dependencies according to {requirements_path}")
+
+    print(
+        f"[install_requirements_with_pip] Started. pip path: {pip_path}, reqs path: {requirements_path}"
+    )
+    pipUpdateCode = subprocess.call([pip_path, "install", "-U", "pip"])  # updating pip
+    if pipUpdateCode != 0:
+        print(f"{Fore.RED} ERROR: pip update failed with code {pipUpdateCode}")
+        raise Exception(
+            f"\n{Fore.RED}ERROR: pip update failed with code {pipUpdateCode}\n"
+        )
+
+    requirementsInstallCode = subprocess.call(
+        [pip_path, "install", "-r", requirements_path]
+    )
+    if requirementsInstallCode != 0:
+        print(
+            f"{Fore.RED} ERROR: Requirements installation failed with code {requirementsInstallCode}"
+        )
+        raise Exception(
+            f"\n{Fore.RED}ERROR: Requirements installation failed with code {requirementsInstallCode}\n"
+        )
+
+    print(
+        f"Successfully installed dependencies according to {requirements_path} with {pip_path}"
+    )
 
 
 def install_dependencies(
     pip_path, venv_path, requirements_path, python_version, name=""
 ):
-    if is_file(pip_path):
-        print(f"It seems that {name} requirements are already installed, which is nice")
-    else:
-        create_env_if_not_exist(venv_path, python_version)
-        install_requirements_with_pip(pip_path, requirements_path)
+    create_env_if_not_exist(venv_path, python_version)
+    install_requirements_with_pip(pip_path, requirements_path)
 
 
 def install_replica_dependencies(python_version):

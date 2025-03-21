@@ -1,32 +1,103 @@
-# It looks like there is no need to use stories. At least for now.
-# In any case, need to find a way to not too use user stories to reduce complexity and simplify training data.
-# version: "3.0"
+version: "3.1"
 
-# stories:
-
-# - story: happy path
+stories:
+# e2e story is commented as it caused an issue with spacynlp: 
+# "Your model uses a component 'SpacyNLP' which needs the param 'model' to be provided to its method 'process'. "
+# https://github.com/RasaHQ/rasa/issues/10525
+# It is an e2e story sample. https://rasa.com/docs/rasa/stories/#end-to-end-training
+# Note. Currently, you cannot provide variant bot responses in e2e training: 
+# "You need to create as many stories as you have utterances." (https://forum.rasa.com/t/end-to-end-training-experimental/38158/8)"
+# - story: User says Goodbye (1)
 #   steps:
-#   - intent: greet
-#   - action: utter_greet
-#   - intent: mood_great
-#   - action: utter_happy
+#   - user: Bye!
+#   - bot: Bye!
 
-# - story: sad path 1
+# - story: User says Goodbye (2)
 #   steps:
-#   - intent: greet
-#   - action: utter_greet
-#   - intent: mood_unhappy
-#   - action: utter_cheer_up
-#   - action: utter_did_that_help
-#   - intent: affirm
-#   - action: utter_happy
+#   - user: Bye!
+#   - bot: Goodbye!
 
-# - story: sad path 2
-#   steps:
-#   - intent: greet
-#   - action: utter_greet
-#   - intent: mood_unhappy
-#   - action: utter_cheer_up
-#   - action: utter_did_that_help
-#   - intent: deny
-#   - action: utter_goodbye
+- story: User asks if I am the bot
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- story: User asks for the name.
+  steps:
+  - intent: bot_name
+  - action: utter_name
+
+- story: User provides their favorite color
+  steps:
+  - intent: user_provides_their_favorite_color
+  - action: utter_i_will_remember_it
+
+- story: User says Hello
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- story: User says Goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User says their name
+  steps:
+  - intent: user_name 
+  - action: utter_greet_with_name
+
+- story: User asks to tell their favorite color.
+  steps:
+  - intent: user_asks_their_favorite_color
+  - action: utter_user_favorite_color
+
+- story: User asks to tell their name.
+  steps:
+  - intent: user_asks_their_name
+  - action: utter_user_name
+
+- story: User asks for birth date
+  steps:
+  - intent: bot_birth_date
+  - action: utter_birth_date
+
+- story: User asks for birth place
+  steps:
+  - intent: bot_birth_place
+  - action: utter_birth_place
+
+- story: User is feeling bad
+  steps:
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+
+- story: User asks for info from personal data.
+  steps:
+  - intent: tell_me_about
+  - action: action_search_data
+
+- story: User asks the price of a thing
+  steps:
+  - intent: price_of_thing
+  - action: action_price_of_thing
+
+- story: User asks to provide info about a thing.
+  steps:
+  - intent: what_is
+  - action: action_what_is
+
+- story: User asks to provide information abut a person.
+  steps:
+  - intent: who_is
+  - action: action_who_is
+
+- story: User asks to translate a word from one language to another
+  steps:
+  - intent: translate_from_to
+  - action: action_translate_from_to
+
+- story: User wants to buy apples.
+  steps:
+  - intent: want_buy_apples
+  - action: utter_suggest_to_buy_apples

@@ -1,7 +1,10 @@
 .coverage
 .idea
 .rasa
+.vscode/*
+!.vscode/launch.json
 __pycache__
 dist
 rasa/bot/models
+server/static/generated
 venv
