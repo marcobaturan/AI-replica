@@ -10,6 +10,21 @@
         +---------------------------------------------+
         |  **Experiment Index Delta Humanity (EIDH)** |
         +---------------------------------------------+
+## Citations
+
+    In-text:
+    According to Sitelew and Turchin (2025), existential risk analysis requires a multidisciplinary approach...
+    
+    In bibliography:
+    Sitelew, R., & Turchin, A. (2025). *Replica-AI*. Publication name, volume(issue), pages. DOI or URL.
+    
+    ## How to cite us
+    
+    To cite this work, please use the following format:
+    
+    Sitelew, R., & Turchin, A. (2025). *Replica-AI*. Publication name, volume(issue), pages. DOI or URL.
+    
+    Publication date: March 21, 2025
 
 ## Abstract
 The concept of mind uploading, or the recreation of a human mind using digital data from a person's lifetime, represents an exciting frontier in artificial intelligence and digital preservation. This paper presents the findings of twelve experiments conducted to explore how digital footprints left by an individual throughout their life can be used to simulate their personality. Various language models were employed, including Gemini, Claude, GPT, Mistral, and Poe, to assess the fidelity of these simulations, progressing from low-resolution models to high-resolution models via prompt engineering. The aim was to investigate how increasing resolution can result in progressively more human-like simulations.
@@ -68,4 +83,31 @@ As AI technology continues to evolve, the possibility of fully reconstructing a 
 
 This document provides a clear and professional presentation of your research. It adheres to the requested format with a structured, academic tone and is decorated with ASCII art for visual appeal.
 
+# Folder structure
+    .
+    ├── Delta Humanity Index test.md
+    ├── Experiment 00 Roman Character.ai.md
+    ├── Experiment 01 Roman 30K.md
+    ├── Experiment 02 Roman 30K.md
+    ├── Experiment 03 Roman 30K.md
+    ├── Experiment 04 Roman 30K.md
+    ├── Experiment 05 Roman 30K.md
+    ├── Experiment 06 Roman 100K.md
+    ├── Experiment 08 Roman 300K.md
+    ├── Experiment 09 Roman 500K.md
+    ├── Experiment 11 Roman Full Mind.md
+    └── Experiment Index Delta Humanity.md
 
+# Explanations
+
+The file 'Delta Humanity Index test.md' is the set of questions we use to testing the artificial personalities.
+In the experiment with every MindFile we select from low information to high information, with and without GCA. 
+GCA means General Cognitive Architecture. Is a file made in a pseudo-language, a mixture between YAML and BNF.
+The YAML part is for emulation of structure of the mind, and the BNF is the nested and recursive rules of the mind.
+The GCA is based in a summary of all cognitive architectures developed for all possible projects
+in Internet, in order to generate the most general model of the human mind based in evidence.
+Because if the vectorial symbolic space of an LLM store all possible combination of intelligences, 
+and GCA constrain to human brains, then the MindFile constraint to specific brain.
+Is a matter of sets and subspaces of the vectorial symbolic space.
+        
+    LLM(GCA(MinfFile)) = Human Mind.
